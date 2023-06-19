@@ -26,7 +26,7 @@ $(document).ready(function() {
 </script>
 </head>
 <body>
-	<form action="hello.jsp">
+	<form action="hello.jsp"> <!-- form: jquery 없이도 작성한 내용을 submit 가능 -->
 		이름 : <input type="text" name="name" id="name"><br>
 		나이 : <input type="number" name="age" id="age"><br>
 		<button type="submit" id="btnSend">보내기</button>
