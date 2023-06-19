@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd" id="WebApp_ID" version="4.0">
+  <display-name>ch05</display-name>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+  </welcome-file-list>
+  
+  <!-- 서블릿 등록 -->
+  <servlet>
+  	<servlet-name>firstServlet</servlet-name>
+  	<servlet-class>ex01.FirstServlet</servlet-class>
+  </servlet>
+  
+  <servlet>
+  	<servlet-name>secondServlet</servlet-name>
+  	<servlet-class>ex01.SecondServlet</servlet-class>
+  </servlet>
+  
+  <!-- 서블릿 맵핑 -->
+  <servlet-mapping>
+  	<servlet-name>firstServlet</servlet-name>
+  	<url-pattern>/first</url-pattern> <!-- 어떻게 요청이 들어왔을 때 처리할 것인지 작성 -->
+  </servlet-mapping>
+  
+  <servlet-mapping>
+  	<servlet-name>secondServlet</servlet-name>
+  	<url-pattern>/second</url-pattern>
+  </servlet-mapping>
+  
+</web-app>
