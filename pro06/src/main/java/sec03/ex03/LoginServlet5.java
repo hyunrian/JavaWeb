@@ -19,6 +19,7 @@ public class LoginServlet5 extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// DB - hong/1234로 되어있다고 가정
+		String addr = request.getParameter("addr");
 		String user_id = request.getParameter("user_id");
 		String user_pw = request.getParameter("user_pw");
 		String result = "";
@@ -27,9 +28,9 @@ public class LoginServlet5 extends HttpServlet {
 		} else {
 			result = "fail";
 		}
-		
+		response.setContentType("text/plain;charset=utf-8"); // setCharEncoding으로 작성해도 되지만 글자가 깨져서 이렇게 작성
 		PrintWriter out = response.getWriter();
-		out.println(result);
+		out.println(result + ":" + addr);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
