@@ -1,6 +1,7 @@
 package sec01.ex01;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Enumeration;
 
 import javax.servlet.ServletException;
@@ -31,6 +32,17 @@ public class InputServlet extends HttpServlet {
 		}
 		*/
 		
+		// MIME-TYPE(데이터 형식) 지정
+		response.setContentType("text/html; charset=utf-8");
+		
+		StringBuffer sb = new StringBuffer();
+		sb.append("<!doctype html>");
+		sb.append("<html>");
+		sb.append("<head>");
+		sb.append("<title>요청처리 결과</title>");
+		sb.append("</head>");
+		sb.append("<body>");
+		
 		// name 값을 얻어서 사용자 입력값 얻기
 		Enumeration<String> enumer = request.getParameterNames();
 		while (enumer.hasMoreElements()) { // enumer가 읽을 요소가 있는 동안 반복
@@ -44,8 +56,14 @@ public class InputServlet extends HttpServlet {
 					str += value + " ";
 				}
 			}
-			System.out.println("name: " + name + ", value: " + str);
-		}
+//			System.out.println("name: " + name + ", value: " + str); // 콘솔에 출력
+			sb.append("name: " + name + ", value: " + str + "<br>"); 
+		} //while
+		sb.append("</body>");
+		sb.append("</html>");
+		
+		PrintWriter out = response.getWriter();
+		out.println(sb.toString()); // client 화면에 출력
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

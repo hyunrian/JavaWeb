@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>login2.html</title>
+</head>
+<body>
+	<form name="frmLogin">
+		아이디 : <input type="text" name="user_id"><br>
+		비밀번호 : <input type="password" name="user_pw"><br>
+		<button type="button" onclick="fn_validate();">로그인</button>
+	</form>
+	
+	<script>
+		function fn_validate() {
+			var frm = document.frmLogin; /* name 값이 있으면 document.xxx로 바로 접근 가능*/
+			console.log(frm);
+			var el_id = frm.user_id;
+			var el_pw = frm.user_pw;
+			console.log(el_id);
+			console.log(el_pw);
+			var user_id = el_id.value;
+			var user_pw = el_pw.value;
+			console.log(user_id);
+			console.log(user_pw);
+			
+			if (user_id == "" || user_pw == "") {
+				alert("아이디와 비밀번호를 모두 입력해주세요");
+				return;
+			}
+			
+			frmLogin.method = "post";
+			frmLogin.action = "login5"; 
+			// 절대경로와 상대경로 둘다 사용 가능 -> /pro06/login5 == login5 (./login5가 맞지만 ./는 생략 가능)
+			frmLogin.submit();
+		}
+	</script>
+</body>
+</html>
