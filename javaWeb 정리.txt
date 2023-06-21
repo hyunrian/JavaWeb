@@ -13,5 +13,6 @@
 
 
 --test--
+구구단 출력과 css(background, font color) 작성
 해당 프로젝트명으로 바로 접근 시 main.html이 로딩 -> web.xml에서 welcome 부분 수정
 자바스크립트/클라이언트 유효성 검사
