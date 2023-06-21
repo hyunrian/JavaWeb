@@ -8,7 +8,8 @@
 </head>
 <body>
 	<h1>회원가입폼</h1>
-	<form action="/pro08/member?command=addRun">
+	<form action="/pro08/member">
+		<input type="hidden" name="command" value="addRun">
 		<button type="submit">가입완료</button>
 	</form>
 </body>

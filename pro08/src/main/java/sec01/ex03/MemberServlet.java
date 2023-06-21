@@ -39,7 +39,8 @@ public class MemberServlet extends HttpServlet {
 			break;
 		case "addRun" : // 회원가입 처리
 			// db작업 했다고 가정 -> 회원목록으로 이동해야 함
-			response.sendRedirect("/pro08/member");
+			boolean result = true;
+			response.sendRedirect("/pro08/member?command=list&result=" + result);
 			break;
 		case "modifyForm" : // 회원수정 화면
 			// db로부터 해당 아이디의 회원 정보 1명에 대한 값을 얻은 후 데이터를 저장하여 사용자화면에 보여줌
