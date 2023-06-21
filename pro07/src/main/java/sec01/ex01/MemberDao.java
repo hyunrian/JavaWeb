@@ -32,9 +32,9 @@ public class MemberDao {
 			Context context = new InitialContext();
 			DataSource ds = (DataSource)((Context)context.lookup("java:comp/env"))
 								.lookup("jdbc/oracleDB"); // 정해져있는 이름(java:comp/env)을 사용해야 함
-			System.out.println("ds:" + ds);
+//			System.out.println("ds:" + ds);
 			Connection conn = ds.getConnection();
-			System.out.println("conn:" + conn);
+//			System.out.println("conn:" + conn);
 			return conn;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -55,7 +55,7 @@ public class MemberDao {
 		PreparedStatement pstmt = null;
 		try {
 			conn = getConnection();
-			String sql = "insert into t_member"
+			String sql = "insert into t_member(id, pwd, name, email)"
 					+ " values(?, ?, ?, ?)";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, vo.getId());
@@ -103,9 +103,52 @@ public class MemberDao {
 	}
 	
 	// 수정
+	public boolean editMember(MemberVo vo) {
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		try {
+			conn = getConnection();
+			String sql = "update t_member"
+					+ " set pwd = ?,"
+					+ " name = ?,"
+					+ " email = ?"
+					+ " where id = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, vo.getPwd());
+			pstmt.setString(2, vo.getName());
+			pstmt.setString(3, vo.getEmail());
+			pstmt.setString(4, vo.getId());
+			int count = pstmt.executeUpdate();
+			if (count == 1) return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			closeAll(conn, pstmt, null);
+		}
+		
+		return false;
+	}
 	
 	// 삭제
-	
+	public boolean deleteMember(String id) {
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		try {
+			conn = getConnection();
+			String sql = "delete t_member where id = '" + id + "'";
+			pstmt = conn.prepareStatement(sql);
+			int count = pstmt.executeUpdate();
+			if (count == 1) return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			closeAll(conn, pstmt, null);
+		}
+		
+		return false;
+	}
 	
 	
 }
