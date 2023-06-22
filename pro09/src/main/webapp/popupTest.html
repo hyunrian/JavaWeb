@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>popupTest.html</title>
+<script>
+	window.onload = function() {
+		console.log("fckkkk");
+		var result = getCookieValue();
+		if (result == "false") {
+			// 팝업창 띄우기
+			window.open("popup.html", "popup", "target=_parent, width=400, height=250");
+		}
+	}
+	
+	function getCookieValue() {
+		var result = "false";
+		var docCookie = document.cookie;
+		console.log(docCookie);
+		var cookies = docCookie.split(";");
+		console.log(cookies);
+		
+		for (var i = 0; i < cookies.length; i++) {
+			var aCookie = cookies[i];
+			var nameValue = aCookie.split("=");
+			console.log(nameValue);
+			var name = nameValue[0].trim();
+			
+			if (name == "notShowPop") {
+				result = nameValue[1];
+				break;
+			}
+		}
+		return result;
+	} // getCookieValue()
+	
+	function deleteCookie() {
+		document.cookie = "notShowPop=false;path=/;expires=-1";
+	}
+	
+</script>
+</head>
+<body>
+	<button type="button" onclick="deleteCookie();">쿠키삭제</button>
+</body>
+</html>
