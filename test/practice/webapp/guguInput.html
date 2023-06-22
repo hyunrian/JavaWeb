@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>guguInput.html</title>
+<!-- <script src="https://code.jquery.com/jquery-1.12.4.js"></script> -->
+<!-- <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> -->
+</head>
+
+<body>
+	<h1>구구단 보기</h1>
+	<h3>구구단 숫자를 입력하세요</h3>
+	<form name="frm" >
+		<input type="number" name="num1" required> * <input type="number" name="num2" required><br><br>
+		<button onclick="checkVal()">입력</button>	
+	</form>
+<script type="text/javascript">
+	function checkVal() {
+		var frm = document.frm;
+		var num1 = frm.num1.value;
+		var num2 = frm.num2.value;
+		
+// 		console.log("num1:" + num1 + ", num2: " + num2);
+// 		if (2 <= num1 && num1 <= 9 && 1 <= num2 && num2 <= 9) {
+			frm.action = "gugu";
+			frm.submit();
+// 		} else {
+// 			alert("유효한 값을 입력하세요");
+// 			return;
+// 		}
+	}
+</script>
+</body>
+</html>
