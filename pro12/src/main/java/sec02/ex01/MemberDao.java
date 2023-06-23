@@ -180,8 +180,17 @@ public class MemberDao {
 		try {
 			conn = getConnection();
 			String sql = "select * from t_member"
-					+ " where name like '%' || ? || '%'"; // sql의 연결연산자 || 사용
+//					+ " where name like '%' || ? || '%'"; // sql의 연결연산자 || 사용
+//					+ " where name like ?";
+					+ " where name like concat(concat('%', ?), '%')"; // oracle에서는 concat의 파라미터 2개라 중첩해서 사용함
+			/* 이 상황에서 쿼리문을 작성할 수 있는 4가지 방법이 있음
+			 * 1. "where name like '%"+searchName+"%'";
+			 * 2. "where name like ''%' || ? || '%'";
+			 * 3. "where name like ?"  &&   pstmt.setString(1, "%"+searchName+"%");
+			 * 4. "where name like concat('%', ?, '%')";   concat() == 여러 문자열 하나로 합치기 
+			 * */
 			pstmt = conn.prepareStatement(sql);
+//			pstmt.setString(1, "%"+searchName+"%");
 			pstmt.setString(1, searchName);
 			rs = pstmt.executeQuery();
 			List<MemberVo> list = new ArrayList<>();
