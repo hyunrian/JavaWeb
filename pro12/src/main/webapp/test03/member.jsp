@@ -41,6 +41,7 @@
 			<td><%=vo.getEmail() %></td>
 			<td><%=vo.getJoindate() %></td>
 		</tr>
+<%-- 액션 태그 내용 추가 필요 --%>
 	<%
 	}
 	%>
