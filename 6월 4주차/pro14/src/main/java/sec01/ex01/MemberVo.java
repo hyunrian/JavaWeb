@@ -6,6 +6,7 @@ public class MemberVo {
 
 	private String id, pwd, name, email;
 	private Date joindate;
+	private Address address;
 	
 	public MemberVo() {
 		super();
@@ -58,10 +59,19 @@ public class MemberVo {
 	public void setJoindate(Date joindate) {
 		this.joindate = joindate;
 	}
+	
+	public Address getAddress() {
+		return address;
+	}
+
+	public void setAddress(Address address) {
+		this.address = address;
+	}
 
 	@Override
 	public String toString() {
-		return "MemberVo [id=" + id + ", pwd=" + pwd + ", name=" + name + ", "
-				+ "email=" + email + ", joindate=" + joindate + "]";
+		return "MemberVo [id=" + id + ", pwd=" + pwd + ", name=" + name + ", email=" + email + ", joindate=" + joindate
+				+ ", address=" + address + "]";
 	}
+
 }
