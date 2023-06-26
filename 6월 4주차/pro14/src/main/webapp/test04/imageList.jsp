@@ -10,24 +10,28 @@
 <style>
 	span{
 		display:inline-block;
-		width:300px;
+		width:200px;
  		text-align:center;
- 		height: 100px;
+ 		vertical-align: middle;
 	}
 	li{
 		list-style-type:none;
 		border-bottom: 1px solid;
 		vertical-align: middle;
+		height: 80px;
 	}
 	ul{
 		display:inline-block;
 		vertical-align: middle;
 	}
+	img{
+		margin-top:5px;
+	}
 </style>
 </head>
 <body>
 <ul>
-	<li>
+	<li style="height:50px;">
 		<span>이미지</span>
 		<span>이미지 이름</span>
 		<span>선택하기</span>
