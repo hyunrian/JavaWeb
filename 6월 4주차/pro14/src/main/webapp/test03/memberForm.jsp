@@ -12,7 +12,7 @@
 <body>
 	<h3>회원가입</h3>
 	<%-- 표현언어로 contextPath 설정하기 --%>
-	<form action="${contextPath}/test03/memberForm.jsp" method="post">
+	<form action="${contextPath}/test03/member9.jsp" method="post">
 		<table>
 			<tr>
 				<td>아이디</td>
