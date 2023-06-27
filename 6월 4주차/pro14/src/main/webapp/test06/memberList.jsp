@@ -8,6 +8,12 @@
 <head>
 <meta charset="UTF-8">
 <title>memberList.jsp</title>
+<script>
+	var result = "${result}";
+	if (result == "true") alert("가입 성공");
+	else alert("가입 실패");
+		
+</script>
 </head>
 <body>
 	<h1>회원 목록</h1>

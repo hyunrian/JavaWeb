@@ -9,9 +9,10 @@
 
 <%
 	MemberDao dao = MemberDao.getInstance();
-	dao.addMember(vo);
+	boolean result = dao.addMember(vo);
 	List<MemberVo> list = dao.listMembers();
 	request.setAttribute("list", list);
+	request.setAttribute("result", result);
 %>
 
 <jsp:forward page="memberList.jsp"/>
