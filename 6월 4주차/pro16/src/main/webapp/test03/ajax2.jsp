@@ -12,7 +12,8 @@ $(document).ready(function() {
 	$("#btnGet").click(function() {
 		var url = "http://localhost/pro16/ajaxTest2";
 		$.get(url, function(rData) {  
-			// 파라미터 : (url, 보내는데이터, 응답을받으면 실행할 함수). 보내는 데이터가 없을 경우 rData 생략 가능
+			// $.get(url, sData, function(rData) {});
+			// 파라미터 : (url, 보내는데이터, 응답을받으면 실행할 함수). 보내는 데이터가 없을 경우 sData 생략 가능
 // 			console.log(rData); // 일반 문서(설정된 타입의)
 // 			console.log($(rData)); // $()을 사용하면 jQuery 기능 사용 가능
 			let books = $(rData).find("book");
