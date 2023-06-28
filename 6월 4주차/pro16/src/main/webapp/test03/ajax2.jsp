@@ -14,6 +14,8 @@ $(document).ready(function() {
 		$.get(url, function(rData) {  
 			// $.get(url, sData, function(rData) {});
 			// 파라미터 : (url, 보내는데이터, 응답을받으면 실행할 함수). 보내는 데이터가 없을 경우 sData 생략 가능
+			// rData로 받아올 수 있는 데이터는 서블릿에서 response한 응답 결과임
+			// jQuery에서 응답 결과로 받기 위해서는 PrintWriter를 이용한 출력 뿐이라 writer를 사용하는 것
 // 			console.log(rData); // 일반 문서(설정된 타입의)
 // 			console.log($(rData)); // $()을 사용하면 jQuery 기능 사용 가능
 			let books = $(rData).find("book");
