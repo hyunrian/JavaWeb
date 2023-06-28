@@ -16,6 +16,8 @@ public class AjaxTest2 extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		response.setContentType("text/xml;charset=utf-8");
+		// xml도 형식이 있는 문자열로 생각하면 됨
+		// 데이터를 주고받을 때는 타입이 text 아니면 binary밖에 없음!
 		PrintWriter out = response.getWriter();
 		String rData = "";
 		rData += "<main>"
