@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import util.MemberParamUtil;
+
 @SuppressWarnings("serial")
 @WebServlet("/member/*") // 경로가 /member/xxx 로 들어오면 모든 요청을 여기서 처리. 
 						
@@ -30,6 +32,8 @@ public class MemberController extends HttpServlet { // 요청 처리는 서블�
 //		System.out.println("pathInfo: "+pathInfo);
 		
 		String nextPage = "";
+		MemberVo vo = null;
+		HttpSession session = request.getSession();
 		
 		switch (pathInfo) {
 		case "/listMembers" : // 회원 목록 조회
@@ -41,41 +45,30 @@ public class MemberController extends HttpServlet { // 요청 처리는 서블�
 			nextPage = "test01/addMemberForm";
 			break;
 		case "/addMemberRun" : // 회원가입 처리
-			String id = request.getParameter("id");
-			String pwd = request.getParameter("pwd");
-			String name = request.getParameter("name");
-			String email = request.getParameter("email");
-			MemberVo vo = new MemberVo(id, pwd, name, email);
+			vo = MemberParamUtil.setData(request);
 			boolean addResult = memberService.addMember(vo);
 			// request에 담아봤자 redirect하므로 소용이 없음 -> 영역이 더 넓은 세션 사용
 			// 세션에 담으면 parameter를 활용하지 않아도 됨(새로고침해도 ㄱㅊ)
 			// 회원가입처리 jsp에서 작업이 끝난 후 session에 담은 attrubute를 삭제해야 함
-			HttpSession session = request.getSession();
 			session.setAttribute("addResult", addResult);
 			nextPage = "redirect:/member/listMembers"; // forward가 아닌 redirect 처리가 필요함
 			break;
 		case "/modifyMemberForm": // 회원 수정 양식
-			String id2 = request.getParameter("id");
-			MemberVo vo2 = memberService.getMemberById(id2);
-			request.setAttribute("vo", vo2);
+			vo = MemberParamUtil.setData(request);
+			vo = memberService.getMemberById(vo.getId());
+			request.setAttribute("vo", vo);
 			nextPage = "test01/modifyMemberForm";
 			break;
 		case "/modifyMemberRun": // 회원 수정 처리
-			String id3 = request.getParameter("id");
-			String pwd3 = request.getParameter("pwd");
-			String name3 = request.getParameter("name");
-			String email3 = request.getParameter("email");
-			MemberVo vo3 = new MemberVo(id3, pwd3, name3, email3);
-			boolean modifyResult = memberService.editMember(vo3);
-			HttpSession session2 = request.getSession();
-			session2.setAttribute("modifyResult", modifyResult);
+			vo = MemberParamUtil.setData(request);
+			boolean modifyResult = memberService.editMember(vo);
+			session.setAttribute("modifyResult", modifyResult);
 			nextPage = "redirect:/member/listMembers";
 			break;
-		case "/deleteMemberRun": // 회원 삭제 처리
-			String id4 = request.getParameter("id");
-			boolean deleteResult = memberService.deleteMember(id4);
-			HttpSession session3 = request.getSession();
-			session3.setAttribute("deleteResult", deleteResult);
+		case "/removeMemberRun": // 회원 삭제 처리
+			vo = MemberParamUtil.setData(request);
+			boolean deleteResult = memberService.deleteMember(vo.getId());
+			session.setAttribute("deleteResult", deleteResult);
 			nextPage = "redirect:/member/listMembers";
 			break;
 		}
@@ -88,12 +81,10 @@ public class MemberController extends HttpServlet { // 요청 처리는 서블�
 					request.getRequestDispatcher(PREFIX + nextPage + POSTFIX);
 			dispatcher.forward(request, response); // view쪽에 list를 넘겨줌
 		}
-
 	}
 
 	protected void doPost(HttpServletRequest request, 
 			HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
-
 }
