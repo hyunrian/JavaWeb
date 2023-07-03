@@ -37,7 +37,7 @@ $(function() {
 	$(".btn-remove").click(function() {
 		var id = $(this).attr("data-id");
 		console.log(id);
-		location.href="/member/deleteMemberRun?id=" + id;
+		location.href="/member/removeMemberRun?id=" + id;
 	});
 });
 </script>
