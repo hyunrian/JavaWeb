@@ -21,31 +21,21 @@ public class BoardDao {
 		return instance;
 	}
 	
-	private Connection getConnection() {
-		try {
-			Context context = new InitialContext();
-			DataSource ds = (DataSource)((Context)context.lookup("java:comp/env"))
-								.lookup("jdbc/oracleDB"); // 정해져있는 이름(java:comp/env)을 사용해야 함
-			Connection conn = ds.getConnection();
-			return conn;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
+	private Connection conn;
+	
+	public void setConn(Connection conn) {
+		this.conn = conn;
 	}
 	
-	private void closeAll(Connection conn, PreparedStatement pstmt, ResultSet rs) {
-		if (conn != null) try {conn.close();} catch (Exception e) {}
+	private void closeAll(PreparedStatement pstmt, ResultSet rs) {
 		if (pstmt != null) try {pstmt.close();} catch (Exception e) {}
 		if (rs != null) try {rs.close();} catch (Exception e) {}
 	}
 	
 	public boolean addArticle(BoardVo vo) {
-		Connection conn = null;
 		PreparedStatement pstmt = null;
 		
 		try {
-			conn = getConnection();
 			String sql = "insert into t_board "
 					+ "		values(seq_board_bno.nextval, seq_board_bno.nextval,"
 					+ " 0, 0, ?, ?, ?, sysdate, 0)";
@@ -58,18 +48,16 @@ public class BoardDao {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			closeAll(conn, pstmt, null);
+			closeAll(pstmt, null);
 		}
 		return false;
 	}
 	
 	public List<BoardVo> getList() {
-		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
-			conn = getConnection();
-			String sql = "select * from t_board order by bgroup desc";
+			String sql = "select * from t_board order by bgroup desc, bseq";
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 			List<BoardVo> list = new ArrayList<>();
@@ -90,18 +78,16 @@ public class BoardDao {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			closeAll(conn, pstmt, rs);
+			closeAll(pstmt, rs);
 		}
 		
 		return null;
 	}
 	
 	public BoardVo getDetail(int bno) {
-		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
-			conn = getConnection();
 			String sql = "select * from t_board where bno = ?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, bno);
@@ -121,17 +107,15 @@ public class BoardDao {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			closeAll(conn, pstmt, rs);
+			closeAll(pstmt, rs);
 		}
 		return null;
 	}
 	
 	public boolean modifyArticle(BoardVo vo) {
-		Connection conn = null;
 		PreparedStatement pstmt = null;
 		
 		try {
-			conn = getConnection();
 			String sql = "update t_board"
 					+ "		set btitle = ?,"
 					+ "			bcontent = ?"
@@ -145,17 +129,15 @@ public class BoardDao {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			closeAll(conn, pstmt, null);
+			closeAll(pstmt, null);
 		}
 		return false;
 	}
 	
 	public boolean deleteArticle(int bno) {
-		Connection conn = null;
 		PreparedStatement pstmt = null;
 		
 		try {
-			conn = getConnection();
 			String sql = "delete from t_board where bno=?";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, bno);
@@ -164,9 +146,64 @@ public class BoardDao {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			closeAll(conn, pstmt, null);
+			closeAll(pstmt, null);
 		}
 		return false;
+	}
+	
+	public void increaseCount(int bno) { // 조회수 증가
+		PreparedStatement pstmt = null;
+		try {
+			String sql = "update t_board set"
+					+ "		readcount = readcount + 1"
+					+ "		where bno = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, bno);
+			pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			closeAll(pstmt, null);
+		}
+	}
+	
+	public void updateSeq(BoardVo vo) {
+		PreparedStatement pstmt = null;
+		try {
+			String sql = "update t_board set"
+					+ "		bseq = bseq + 1"
+					+ "		where bgroup = ?"
+					+ "		and bseq > ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, vo.getBgroup());
+			pstmt.setInt(2, vo.getBseq()+1);
+			pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			closeAll(pstmt, null);
+		}
+	}
+	
+	public void addReply(BoardVo vo) {
+		PreparedStatement pstmt = null;
+		try {
+			String sql = "insert into t_board "
+					+ "		values(seq_board_bno.nextval,"
+					+ " ?, ?, ?, ?, ?, ?, sysdate, 0)";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, vo.getBgroup());
+			pstmt.setInt(2, vo.getBseq()+1);
+			pstmt.setInt(3, vo.getBlevel()+1);
+			pstmt.setString(4, vo.getBtitle());
+			pstmt.setString(5, vo.getBcontent());
+			pstmt.setString(6, vo.getId());
+			pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			closeAll(pstmt, null);
+		}
 	}
 	
 }

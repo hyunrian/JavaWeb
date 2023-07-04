@@ -29,7 +29,7 @@ public class BoardController extends HttpServlet {
 		String pathInfo = request.getPathInfo(); 
 		
 		String nextPage = "";
-		BoardVo vo = null;
+		BoardVo boardVo = null;
 		HttpSession session = request.getSession();
 		
 		switch (pathInfo) {
@@ -37,10 +37,10 @@ public class BoardController extends HttpServlet {
 			nextPage = "board/addArticleForm";
 			break;
 		case "/addArticleRun": // 글쓰기 처리
-			vo = BoardParamUtil.setData(request);
+			boardVo = BoardParamUtil.setData(request);
 			String id = (String)session.getAttribute("loginId");
-			vo.setId(id);
-			boolean addResult = boardService.addArticle(vo);
+			boardVo.setId(id);
+			boolean addResult = boardService.addArticle(boardVo);
 			session.setAttribute("addResult", addResult);
 			nextPage = "redirect:/board/getList";
 			break;
@@ -50,21 +50,33 @@ public class BoardController extends HttpServlet {
 			nextPage = "board/articleList";
 			break;
 		case "/articleDetail":
-			vo = BoardParamUtil.setData(request);
-			vo = boardService.getDetail(vo.getBno());
-			request.setAttribute("vo", vo);
+			boardVo = BoardParamUtil.setData(request);
+			boardVo = boardService.getDetail(boardVo.getBno());
+			request.setAttribute("boardVo", boardVo);
 			nextPage = "/board/articleDetail";
 			break;
 		case "/modifyArticleRun":
-			vo = BoardParamUtil.setData(request);
-			boolean modifyResult = boardService.modifyArticle(vo);
+			boardVo = BoardParamUtil.setData(request);
+			boolean modifyResult = boardService.modifyArticle(boardVo);
 			session.setAttribute("modifyResult", modifyResult);
-			nextPage = "redirect:/board/articleDetail?bno=" + vo.getBno();
+			nextPage = "redirect:/board/articleDetail?bno=" + boardVo.getBno();
 			break;
 		case "/deleteArticle":
-			vo = BoardParamUtil.setData(request);
-			boolean deleteResult = boardService.deleteArticle(vo.getBno());
+			boardVo = BoardParamUtil.setData(request);
+			boolean deleteResult = boardService.deleteArticle(boardVo.getBno());
 			session.setAttribute("deleteResult", deleteResult);
+			nextPage = "redirect:/board/getList";
+			break;
+		case "/replyForm":
+			boardVo = BoardParamUtil.setData(request);
+			request.setAttribute("boardVo", boardVo);
+			nextPage = "board/replyForm";
+			break;
+		case "/replyRun":
+			boardVo = BoardParamUtil.setData(request);
+			String loginId = (String)session.getAttribute("loginId");
+			boardVo.setId(loginId);
+			boardService.replyRun(boardVo);
 			nextPage = "redirect:/board/getList";
 			break;
 		}
