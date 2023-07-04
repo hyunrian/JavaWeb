@@ -4,8 +4,12 @@
 <%@ include file="/WEB-INF/views/include/top.jsp" %>
 <script>
 var deleteResult = "${sessionScope.deleteResult}";
+var loginResult = "${sessionScope.loginResult}";
+
 if (deleteResult == "true") alert("삭제 성공");
 else if (deleteResult == "false") alert("삭제 실패");
+
+if (loginResult == "true") alert("로그인 성공");
 </script>
 
 <div class="container-fluid">
@@ -21,6 +25,7 @@ else if (deleteResult == "false") alert("삭제 실패");
 			</div>
 		</div>
 	</div>
+	${sessionScope.loginId}님, 반갑습니다!<br><br>
 	<div class="row">
 		<div class="col-md-12">
 			<table class="table">
@@ -71,5 +76,6 @@ else if (deleteResult == "false") alert("삭제 실패");
 </div>
 <%
 	session.removeAttribute("deleteResult");
+	session.removeAttribute("loginResult");
 %>
 <%@ include file="/WEB-INF/views/include/bottom.jsp" %>
