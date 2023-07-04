@@ -19,7 +19,8 @@ $(function() {
 	$("#btnRemove").click(function() {
 		var bno = "${boardVo.bno}"; // jquery에서 jsp의 \${}을 쓰려면 "" 안에 작성해야 함
 		// 주석 내에서 표현식 앞에 \를 써야 에러가 발생하지 않음!!
-		location.href = "/board/deleteArticle?bno=" + bno;
+		location.href = "/board/deleteArticle?bno=" + bno 
+				+ "&bgroup=${boardVo.bgroup}&bseq=${boardVo.bseq}";
 	});
 	
 });

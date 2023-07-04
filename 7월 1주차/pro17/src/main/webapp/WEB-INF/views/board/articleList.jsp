@@ -6,6 +6,7 @@
 <script>
 var deleteResult = "${sessionScope.deleteResult}";
 var loginResult = "${sessionScope.loginResult}";
+var hasReply = "${sessionScope.hasReply}";
 
 if (deleteResult == "true") alert("삭제 성공");
 else if (deleteResult == "false") alert("삭제 실패");
@@ -57,11 +58,18 @@ if (loginResult == "true") alert("로그인 성공");
 							</td>
 							<td>
 								<span style="padding-right:${vo.blevel * 30}px"></span>
-								<a href="/board/articleDetail?bno=${vo.bno}">
-								<c:if test="${vo.blevel > 0}">
-									ㄴ
-								</c:if>
-								${vo.btitle}</a>
+								<c:choose>
+									<c:when test="${vo.delete_yn == 'y'}">
+										삭제된 게시글입니다.
+									</c:when>
+									<c:otherwise>
+										<a href="/board/articleDetail?bno=${vo.bno}">
+										<c:if test="${vo.blevel > 0}">
+											ㄴ
+										</c:if>
+										${vo.btitle}</a>
+									</c:otherwise>
+								</c:choose>
 							</td>
 							<td>
 								${vo.id}
