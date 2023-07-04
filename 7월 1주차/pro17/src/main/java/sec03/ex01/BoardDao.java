@@ -150,4 +150,23 @@ public class BoardDao {
 		return false;
 	}
 	
+	public boolean deleteArticle(int bno) {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		
+		try {
+			conn = getConnection();
+			String sql = "delete from t_board where bno=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, bno);
+			int count = pstmt.executeUpdate();
+			if (count == 1) return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			closeAll(conn, pstmt, null);
+		}
+		return false;
+	}
+	
 }

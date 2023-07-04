@@ -29,4 +29,8 @@ public class BoardService {
 	public boolean modifyArticle(BoardVo vo) {
 		return dao.modifyArticle(vo);
 	}
+	
+	public boolean deleteArticle(int bno) {
+		return dao.deleteArticle(bno);
+	}
 }

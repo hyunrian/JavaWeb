@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import util.BoardParamUtil;
-import util.MemberParamUtil;
 
 @SuppressWarnings("serial")
 @WebServlet("/board/*") 
@@ -59,6 +58,12 @@ public class BoardController extends HttpServlet {
 			boolean modifyResult = boardService.modifyArticle(vo);
 			session.setAttribute("modifyResult", modifyResult);
 			nextPage = "redirect:/board/articleDetail?bno=" + vo.getBno();
+			break;
+		case "/deleteArticle":
+			vo = BoardParamUtil.setData(request);
+			boolean deleteResult = boardService.deleteArticle(vo.getBno());
+			session.setAttribute("deleteResult", deleteResult);
+			nextPage = "redirect:/board/getList";
 			break;
 		}
 		
