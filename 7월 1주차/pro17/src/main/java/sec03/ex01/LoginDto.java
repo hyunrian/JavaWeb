@@ -16,6 +16,6 @@ import lombok.ToString;
 public class LoginDto {
 	
 //	private final int number;
-	private String id, pwd;
+	private String id, pwd, rememberId;
 	
 }
