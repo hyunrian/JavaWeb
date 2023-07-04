@@ -63,8 +63,10 @@ public class BoardController extends HttpServlet {
 			break;
 		case "/deleteArticle":
 			boardVo = BoardParamUtil.setData(request);
-			boolean deleteResult = boardService.deleteArticle(boardVo.getBno());
+			System.out.println("vo:" + boardVo);
+			boolean deleteResult = boardService.deleteArticle(boardVo);
 			session.setAttribute("deleteResult", deleteResult);
+			session.setAttribute(nextPage, session);
 			nextPage = "redirect:/board/getList";
 			break;
 		case "/replyForm":

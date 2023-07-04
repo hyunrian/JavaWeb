@@ -38,7 +38,7 @@ public class BoardDao {
 		try {
 			String sql = "insert into t_board "
 					+ "		values(seq_board_bno.nextval, seq_board_bno.nextval,"
-					+ " 0, 0, ?, ?, ?, sysdate, 0)";
+					+ " 0, 0, ?, ?, ?, sysdate, 0, 'n')";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, vo.getBtitle());
 			pstmt.setString(2, vo.getBcontent());
@@ -71,8 +71,9 @@ public class BoardDao {
 				String id = rs.getString("id");
 				Date regdate = rs.getDate("regdate");
 				int readcount = rs.getInt("readcount");
+				String delete_yn = rs.getString("delete_yn");
 				list.add(new BoardVo(bno, bgroup, bseq, 
-						blevel, btitle, bcontent, id, regdate, readcount));
+						blevel, btitle, bcontent, id, regdate, readcount, delete_yn));
 			}
 			return list;
 		} catch (Exception e) {
@@ -136,7 +137,6 @@ public class BoardDao {
 	
 	public boolean deleteArticle(int bno) {
 		PreparedStatement pstmt = null;
-		
 		try {
 			String sql = "delete from t_board where bno=?";
 			pstmt = conn.prepareStatement(sql);
@@ -190,7 +190,7 @@ public class BoardDao {
 		try {
 			String sql = "insert into t_board "
 					+ "		values(seq_board_bno.nextval,"
-					+ " ?, ?, ?, ?, ?, ?, sysdate, 0)";
+					+ " ?, ?, ?, ?, ?, ?, sysdate, 0, 'n')";
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, vo.getBgroup());
 			pstmt.setInt(2, vo.getBseq()+1);
@@ -198,6 +198,42 @@ public class BoardDao {
 			pstmt.setString(4, vo.getBtitle());
 			pstmt.setString(5, vo.getBcontent());
 			pstmt.setString(6, vo.getId());
+			pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			closeAll(pstmt, null);
+		}
+	}
+	
+	public boolean hasReply(BoardVo vo) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			String sql = "select count(*) cnt from t_board "
+					+ "		where bgroup = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, vo.getBgroup());
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				int cnt = rs.getInt("cnt");
+				if (cnt > 1) return true;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			closeAll(pstmt, rs);
+		}
+		return false;
+	}
+	
+	public void updateDeleteYN(int bno) {
+		PreparedStatement pstmt = null;
+		try {
+			String sql = "update t_board set"
+					+ "	delete_yn = 'y' where bno=?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, bno);
 			pstmt.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -24,5 +24,19 @@ public class BoardVo {
 	private String id;
 	private Date regdate;
 	private int readcount;
+	private String delete_yn;
 	
+	public BoardVo(int bno, int bgroup, int bseq, int blevel, String btitle, String bcontent, String id, Date regdate,
+			int readcount) {
+		super();
+		this.bno = bno;
+		this.bgroup = bgroup;
+		this.bseq = bseq;
+		this.blevel = blevel;
+		this.btitle = btitle;
+		this.bcontent = bcontent;
+		this.id = id;
+		this.regdate = regdate;
+		this.readcount = readcount;
+	}
 }

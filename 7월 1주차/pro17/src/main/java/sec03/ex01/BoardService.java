@@ -73,8 +73,8 @@ public class BoardService {
 			conn = getConnection();
 			conn.setAutoCommit(false); // transaction 시작(아래 작업을 한단위로 묶기 위해)
 			dao.setConn(conn);
-			dao.increaseCount(bno);
-			vo = dao.getDetail(bno);
+			dao.increaseCount(bno); // 조회수 증가
+			vo = dao.getDetail(bno); // 글 내용 보기
 			conn.commit();
 			return vo;
 		} catch (Exception e) {
@@ -101,12 +101,19 @@ public class BoardService {
 		return false;
 	}
 	
-	public boolean deleteArticle(int bno) {
+	public boolean deleteArticle(BoardVo vo) {
 		Connection conn = null;
 		try {
 			conn = getConnection();
 			dao.setConn(conn);
-			return dao.deleteArticle(bno);
+			dao.hasReply(vo);
+			boolean hasReply = dao.hasReply(vo);
+			if (hasReply) {
+				dao.updateDeleteYN(vo.getBno());
+				return true;
+			} else {
+				return dao.deleteArticle(vo.getBno());
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
