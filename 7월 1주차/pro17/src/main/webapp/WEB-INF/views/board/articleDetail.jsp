@@ -12,18 +12,16 @@ $(function() {
 		$("#btnModifyOk").fadeIn("slow");
 		$(".modifyInput").prop("readonly", false);
 	});
-	
-	$("#btnModifyOk").click(function() {
-		
-	});
-	
 	$("#btnReply").click(function() {
 		
 	});
 	
 	$("#btnRemove").click(function() {
-		
+		var bno = "${vo.bno}"; // jquery에서 jsp의 \${}을 쓰려면 "" 안에 작성해야 함
+		// 주석 내에서 표현식 앞에 \를 써야 에러가 발생하지 않음!!
+		location.href = "/board/deleteArticle?bno=" + bno;
 	});
+	
 });
 </script>
 
@@ -35,7 +33,8 @@ $(function() {
 					상세보기
 				</h2>
 				<p>
-					<a class="btn btn-primary btn-large" href="/board/getList">글 목록</a>
+					<a class="btn btn-primary btn-large" 
+						href="/board/getList">글 목록</a>
 				</p>
 			</div>
 		</div>

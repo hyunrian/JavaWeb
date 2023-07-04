@@ -3,7 +3,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="/WEB-INF/views/include/top.jsp" %>
 <script>
-
+var deleteResult = "${sessionScope.deleteResult}";
+if (deleteResult == "true") alert("삭제 성공");
+else if (deleteResult == "false") alert("삭제 실패");
 </script>
 
 <div class="container-fluid">
@@ -14,7 +16,7 @@
 					글 목록
 				</h2>
 				<p>
-					<a class="btn btn-primary btn-large" href="board/addArticleForm">글쓰기</a>
+					<a class="btn btn-primary btn-large" href="addArticleForm">글쓰기</a>
 				</p>
 			</div>
 		</div>
@@ -67,5 +69,7 @@
 		</div>
 	</div>
 </div>
-
+<%
+	session.removeAttribute("deleteResult");
+%>
 <%@ include file="/WEB-INF/views/include/bottom.jsp" %>
