@@ -33,13 +33,6 @@
 					<textarea class="form-control" id="bcontent" name="bcontent"></textarea>
 					<!-- textarea는 태그 사이의 값이 value -->
 				</div>
-				<div class="form-group">
-					 
-					<label for="id">
-						아이디
-					</label>
-					<input type="text" class="form-control" id="id" name="id" />
-				</div>
 				<button type="submit" class="btn btn-primary">
 					작성하기
 				</button>

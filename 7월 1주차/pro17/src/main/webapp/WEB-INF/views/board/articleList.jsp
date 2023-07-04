@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="/WEB-INF/views/include/top.jsp" %>
+<%@ include file="/WEB-INF/views/include/loginInfo.jsp" %>
 <script>
 var deleteResult = "${sessionScope.deleteResult}";
 var loginResult = "${sessionScope.loginResult}";
@@ -25,7 +26,7 @@ if (loginResult == "true") alert("로그인 성공");
 			</div>
 		</div>
 	</div>
-	${sessionScope.loginId}님, 반갑습니다!<br><br>
+
 	<div class="row">
 		<div class="col-md-12">
 			<table class="table">
