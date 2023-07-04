@@ -47,6 +47,8 @@ public class LoginController extends HttpServlet {
 			}
 			break;
 		case "/logout":
+			session.invalidate(); // 현재 세션 무효화 -> 로그아웃됨
+			nextPage = "redirect:/login/loginForm";
 			break;
 		}
 		

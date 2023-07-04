@@ -9,7 +9,7 @@ public class LoginDtoTest {
 		dto1.setPwd("1234");
 		System.out.println(dto1.toString());
 		
-		LoginDto dto2 = new LoginDto("kim", "5678");
+		LoginDto dto2 = new LoginDto("kim", "5678", "");
 		System.out.println("id: " + dto2.getId() + ", pwd: " + dto2.getPwd());
 	}
 }

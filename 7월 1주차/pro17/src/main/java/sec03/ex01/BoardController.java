@@ -38,6 +38,8 @@ public class BoardController extends HttpServlet {
 			break;
 		case "/addArticleRun": // 글쓰기 처리
 			vo = BoardParamUtil.setData(request);
+			String id = (String)session.getAttribute("loginId");
+			vo.setId(id);
 			boolean addResult = boardService.addArticle(vo);
 			session.setAttribute("addResult", addResult);
 			nextPage = "redirect:/board/getList";
