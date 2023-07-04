@@ -56,8 +56,12 @@ if (loginResult == "true") alert("로그인 성공");
 								${vo.bno}
 							</td>
 							<td>
+								<span style="padding-right:${vo.blevel * 30}px"></span>
 								<a href="/board/articleDetail?bno=${vo.bno}">
-									${vo.btitle}</a>
+								<c:if test="${vo.blevel > 0}">
+									ㄴ
+								</c:if>
+								${vo.btitle}</a>
 							</td>
 							<td>
 								${vo.id}
