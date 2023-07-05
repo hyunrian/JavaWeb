@@ -57,7 +57,8 @@ public class BoardDao {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		try {
-			String sql = "select * from t_board order by bgroup desc, bseq";
+			String sql = "select * from t_board "
+					+ "	order by bgroup desc, bseq";
 			pstmt = conn.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 			List<BoardVo> list = new ArrayList<>();
@@ -72,8 +73,8 @@ public class BoardDao {
 				Date regdate = rs.getDate("regdate");
 				int readcount = rs.getInt("readcount");
 				String delete_yn = rs.getString("delete_yn");
-				list.add(new BoardVo(bno, bgroup, bseq, 
-						blevel, btitle, bcontent, id, regdate, readcount, delete_yn));
+				list.add(new BoardVo(bno, bgroup, bseq, blevel, 
+						btitle, bcontent, id, regdate, readcount, delete_yn));
 			}
 			return list;
 		} catch (Exception e) {
@@ -102,8 +103,9 @@ public class BoardDao {
 				String id = rs.getString("id");
 				Date regdate = rs.getDate("regdate");
 				int readcount = rs.getInt("readcount");
-				return new BoardVo(bno, bgroup, bseq, 
-						blevel, btitle, bcontent, id, regdate, readcount);
+				String delete_yn = rs.getString("delete_yn");
+				return new BoardVo(bno, bgroup, bseq, blevel, 
+						btitle, bcontent, id, regdate, readcount, delete_yn);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
