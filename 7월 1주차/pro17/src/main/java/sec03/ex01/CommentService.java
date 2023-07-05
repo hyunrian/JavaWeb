@@ -2,6 +2,7 @@ package sec03.ex01;
 
 import java.sql.Connection;
 import java.util.List;
+import java.util.Map;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -66,5 +67,19 @@ public class CommentService {
 			closeConn(conn);
 		}
 		return null;
+	}
+	
+	public boolean deleteComment(Map<String, Object> map) {
+		Connection conn = null;
+		try {
+			conn = getConnection();
+			commentDao.setConn(conn);
+			return commentDao.deleteComment(map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			closeConn(conn);
+		}
+		return false;
 	}
 }

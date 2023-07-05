@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class CommentDao {
 	
@@ -63,6 +64,28 @@ public class CommentDao {
 			pstmt.setString(1, commentVo.getCcontent());
 			pstmt.setString(2, commentVo.getId());
 			pstmt.setInt(3, commentVo.getBno());
+			int count = pstmt.executeUpdate();
+			if (count == 1) return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			closeAll(pstmt, null);
+		}
+		return false;
+	}
+	
+	public boolean deleteComment(Map<String, Object> map) {
+		PreparedStatement pstmt = null;
+		try {
+			String loginId = (String)map.get("loginId");
+			int cno = (Integer)map.get("cno");
+			System.out.println("id:" + loginId + ", cno: " + cno);
+			String sql = "delete from t_comment "
+					+ "	where cno = ?"
+					+ "	and id = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, cno);
+			pstmt.setString(2, loginId);
 			int count = pstmt.executeUpdate();
 			if (count == 1) return true;
 		} catch (Exception e) {

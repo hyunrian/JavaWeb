@@ -1,7 +1,9 @@
 package sec03.ex01;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -33,11 +35,11 @@ public class CommentController extends HttpServlet {
 		CommentVo commentVo = null;
 		String nextPage = "";
 		HttpSession session = request.getSession();
+		String loginId = (String)session.getAttribute("loginId");
 		
 		switch (pathInfo) {
 		case "/addComment":
 			commentVo = commentParamUtil.setData(request);
-			String loginId = (String)session.getAttribute("loginId");
 			commentVo.setId(loginId);
 			boolean commentResult = commentService.addComment(commentVo);
 			request.setAttribute("data", commentResult);
@@ -61,6 +63,17 @@ public class CommentController extends HttpServlet {
 				jsonArray.add(jsonObject);
 			}
 			request.setAttribute("data", jsonArray.toJSONString());
+			nextPage = "data";
+			break;
+		case "/delete":
+			commentVo = commentParamUtil.setData(request);
+			int cno = commentVo.getCno();
+			System.out.println("controller cno: " + cno);
+			Map<String, Object> map = new HashMap<>();
+			map.put("cno", cno);
+			map.put("loginId", loginId);
+			boolean deleteResult = commentService.deleteComment(map);
+			request.setAttribute("data", deleteResult);
 			nextPage = "data";
 			break;
 		}
