@@ -18,11 +18,10 @@ if (loginResult == "true") alert("로그인 성공");
 	<div class="row">
 		<div class="col-md-12">
 			<div class="jumbotron">
-				<h2>
-					글 목록
-				</h2>
+				<h2>글 목록</h2>
 				<p>
-					<a class="btn btn-primary btn-large" href="addArticleForm">글쓰기</a>
+					<a class="btn btn-primary btn-large" 
+						href="addArticleForm">글쓰기</a>
 				</p>
 			</div>
 		</div>
@@ -56,11 +55,11 @@ if (loginResult == "true") alert("로그인 성공");
 									<td>${vo.bno}</td>
 									<td>
 										<span style="padding-right:${vo.blevel * 30}px"></span>
-												<a href="/board/articleDetail?bno=${vo.bno}">
-												<c:if test="${vo.blevel > 0}">
-													ㄴ
-												</c:if>
-												${vo.btitle}</a>
+										<a href="/board/articleDetail?bno=${vo.bno}">
+										<c:if test="${vo.blevel > 0}">
+											ㄴ
+										</c:if>
+										${vo.btitle}</a>
 									</td>
 									<td>${vo.id}</td>
 									<td>${vo.regdate}</td>
