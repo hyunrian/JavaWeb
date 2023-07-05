@@ -6,6 +6,7 @@ import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -37,10 +38,18 @@ public class LoginController extends HttpServlet {
 			break;
 		case "/loginRun":
 			dto = LoginParamUtil.setData(request);
+			System.out.println("loginDto:" + dto);
 			boolean loginResult = loginService.login(dto);
 			session.setAttribute("loginResult", loginResult);
 			if (loginResult == true) {
 				session.setAttribute("loginId", dto.getId());
+				// 아이디저장 체크 시 활용할 쿠키 생성
+				if (dto.getRememberId() != null &&
+						dto.getRememberId().equals("on")) {
+					Cookie cookie = new Cookie("loginId", dto.getId()); 
+					cookie.setMaxAge(60 * 60 * 24 * 7); // 일주일
+					response.addCookie(cookie);
+				}
 				nextPage = "redirect:/board/getList";
 			} else {
 				nextPage = "redirect:/login/loginForm";
