@@ -25,6 +25,15 @@ $(function() {
 				tr += "<td>" + jData[v].ccontent + "</td>";
 				tr += "<td>" + jData[v].id + "</td>";
 				tr += "<td>" + jData[v].regdate + "</td>";
+				
+				var loginId = "${sessionScope.loginId}";
+				if (loginId == jData[v].id) { // 해당 사용자가 작성한 댓글인 경우
+					tr += "<td><button type='button' class='btn btn-sm btn-warning btn-comment-update'>수정</button></td>";
+					tr += "<td><button type='button' class='btn btn-sm btn-danger btn-comment-delete' data-cno='"+ jData[v].cno +"'>삭제</button></td>";
+				} else { // 해당 사용자가 작성한 댓글이 아닌 경우
+					tr += "<td></td>";					
+					tr += "<td></td>";					
+				}
 				tr += "</tr>";
 				$("#commentTable > tbody").append(tr);
 			}
@@ -32,6 +41,8 @@ $(function() {
 	}
 	
 	getCommentList();
+	
+	
 
 	// 수정 버튼
 	$("#btnModify").click(function() {
@@ -68,6 +79,35 @@ $(function() {
 				$("#commentTable > tbody").empty(); 
 				getCommentList();
 				// 비우고 가져오지 않으면 기존 목록에서 계속 append됨
+			}
+		});
+	});
+	
+	
+	// 댓글 삭제 버튼
+	
+	// 비동기 방식으로 추가된 엘리먼트에 대한 이벤트 처리
+	// 비동기로 가져온 것은(소스에 없는것) 불러올 수가 없음
+	// 해당 엘리먼트가 속하는 소스보기 상태에서 존재하는 엘리먼트에 이벤트를 설정해야 함
+// 	$(".btn-comment-delete").click(function() {
+// 		console.log("deleted");
+// 	}); -> 이렇게 작성하면 작동 안됨
+	// 이렇게 작성해야 작동함!
+	// on(이벤트종류, 실제대상, 함수)
+	$("#commentTable > tbody").on("click", ".btn-comment-delete", function() {
+		var that = $(this);
+		var cno = that.attr("data-cno");
+		console.log("cno:" + cno);
+		var url = "/comment/delete";
+		var sData = { "cno" : cno };
+		$.get(url, sData, function(rData) {
+			console.log("rData:" + rData.trim());
+			if (rData.trim() == "true") {
+				that.parent().parent().fadeOut("slow"); // 버튼이 속해있는 tr 제거
+				// 여기서 \$(this)를 쓰면 버튼이 아니라 .get이 됨
+				console.log("삭제 버튼 눌림");
+			} else {
+				
 			}
 		});
 	});
@@ -175,6 +215,8 @@ $(function() {
 						<th>내용</th>
 						<th>작성자</th>
 						<th>작성일</th>
+						<th>수정</th>
+						<th>삭제</th>
 					</tr>
 				</thead>
 				<tbody>
