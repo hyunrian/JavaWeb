@@ -33,54 +33,41 @@ if (loginResult == "true") alert("로그인 성공");
 			<table class="table">
 				<thead>
 					<tr>
-						<th>
-							#
-						</th>
-						<th>
-							제목
-						</th>
-						<th>
-							작성자
-						</th>
-						<th>
-							작성일
-						</th>
-						<th>
-							조회수
-						</th>
+						<th>#</th>
+						<th>제목</th>
+						<th>작성자</th>
+						<th>작성일</th>
+						<th>조회수</th>
 					</tr>
 				</thead>
 				<tbody>
 					<c:forEach var="vo" items="${list}">
-						<tr>
-							<td>
-								${vo.bno}
-							</td>
-							<td>
-								<span style="padding-right:${vo.blevel * 30}px"></span>
-								<c:choose>
-									<c:when test="${vo.delete_yn == 'y'}">
+						<c:choose>
+							<c:when test="${vo.delete_yn == 'y'}">
+								<tr>
+									<td colspan="5" 
+										style="text-align:center; background-color:#F8F9F9">
 										삭제된 게시글입니다.
-									</c:when>
-									<c:otherwise>
-										<a href="/board/articleDetail?bno=${vo.bno}">
-										<c:if test="${vo.blevel > 0}">
-											ㄴ
-										</c:if>
-										${vo.btitle}</a>
-									</c:otherwise>
-								</c:choose>
-							</td>
-							<td>
-								${vo.id}
-							</td>
-							<td>
-								${vo.regdate}
-							</td>
-							<td>
-								${vo.readcount}
-							</td>
-						</tr>
+									</td>
+								</tr>
+							</c:when>
+							<c:otherwise>
+								<tr>
+									<td>${vo.bno}</td>
+									<td>
+										<span style="padding-right:${vo.blevel * 30}px"></span>
+												<a href="/board/articleDetail?bno=${vo.bno}">
+												<c:if test="${vo.blevel > 0}">
+													ㄴ
+												</c:if>
+												${vo.btitle}</a>
+									</td>
+									<td>${vo.id}</td>
+									<td>${vo.regdate}</td>
+									<td>${vo.readcount}</td>
+								</tr>
+							</c:otherwise>
+						</c:choose>
 					</c:forEach>
 				</tbody>
 			</table>
