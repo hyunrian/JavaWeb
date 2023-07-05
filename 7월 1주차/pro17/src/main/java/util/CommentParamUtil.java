@@ -12,12 +12,17 @@ public class CommentParamUtil {
 		CommentVo commentVo = new CommentVo();
 		
 		int bno = 0;
+		int cno = 0;
 		if (request.getParameter("bno") != null) {
 			bno = Integer.valueOf(request.getParameter("bno"));
+		}
+		if (request.getParameter("cno") != null) {
+			cno = Integer.valueOf(request.getParameter("cno"));
 		}
 		String ccontent = request.getParameter("ccontent");
 		commentVo.setBno(bno);
 		commentVo.setCcontent(ccontent);
+		commentVo.setCno(cno);
 		return commentVo;
 	}
 	
