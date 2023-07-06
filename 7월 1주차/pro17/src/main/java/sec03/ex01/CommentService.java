@@ -54,6 +54,7 @@ public class CommentService {
 		return false;
 	}
 	
+	
 	// 댓글 조회
 	public List<CommentVo> getComment(int bno) {
 		Connection conn = null;
@@ -69,12 +70,28 @@ public class CommentService {
 		return null;
 	}
 	
+	// 댓글 삭제
 	public boolean deleteComment(Map<String, Object> map) {
 		Connection conn = null;
 		try {
 			conn = getConnection();
 			commentDao.setConn(conn);
 			return commentDao.deleteComment(map);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			closeConn(conn);
+		}
+		return false;
+	}
+	
+	// 댓글 수정
+	public boolean updateComment(CommentVo vo) {
+		Connection conn = null;
+		try {
+			conn = getConnection();
+			commentDao.setConn(conn);
+			return commentDao.updateComment(vo);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {

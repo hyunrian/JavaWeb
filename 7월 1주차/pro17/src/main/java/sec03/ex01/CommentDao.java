@@ -95,4 +95,25 @@ public class CommentDao {
 		}
 		return false;
 	}
+	
+	public boolean updateComment(CommentVo vo) {
+		PreparedStatement pstmt = null;
+		try {
+			String sql = "update t_comment"
+					+ "	set ccontent = ?"
+					+ "	where cno = ?"
+					+ "	and id = ?";
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, vo.getCcontent());
+			pstmt.setInt(2, vo.getCno());
+			pstmt.setString(3, vo.getId());
+			int count = pstmt.executeUpdate();
+			if (count == 1) return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			closeAll(pstmt, null);
+		}
+		return false;
+	}
 }

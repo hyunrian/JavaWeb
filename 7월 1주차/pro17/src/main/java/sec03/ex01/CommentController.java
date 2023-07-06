@@ -68,12 +68,18 @@ public class CommentController extends HttpServlet {
 		case "/delete":
 			commentVo = commentParamUtil.setData(request);
 			int cno = commentVo.getCno();
-			System.out.println("controller cno: " + cno);
 			Map<String, Object> map = new HashMap<>();
 			map.put("cno", cno);
 			map.put("loginId", loginId);
 			boolean deleteResult = commentService.deleteComment(map);
 			request.setAttribute("data", deleteResult);
+			nextPage = "data";
+			break;
+		case "/update":
+			commentVo = commentParamUtil.setData(request);
+			commentVo.setId(loginId); // dao에서 작성자 확인 쿼리 작성 목적
+			boolean updateResult = commentService.updateComment(commentVo);
+			request.setAttribute("data", updateResult);
 			nextPage = "data";
 			break;
 		}
