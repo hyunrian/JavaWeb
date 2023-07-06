@@ -1,6 +1,7 @@
 package sec03.ex01;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,17 +34,16 @@ public class CommentController extends HttpServlet {
 		String pathInfo = request.getPathInfo();
 		CommentParamUtil commentParamUtil = new CommentParamUtil();
 		CommentVo commentVo = null;
-		String nextPage = "";
 		HttpSession session = request.getSession();
 		String loginId = (String)session.getAttribute("loginId");
+		String data = "";
 		
 		switch (pathInfo) {
 		case "/addComment":
 			commentVo = commentParamUtil.setData(request);
 			commentVo.setId(loginId);
 			boolean commentResult = commentService.addComment(commentVo);
-			request.setAttribute("data", commentResult);
-			nextPage = "data";
+			data = String.valueOf(commentResult);
 			break;
 		case "/getCommentList":
 			commentVo = commentParamUtil.setData(request);
@@ -62,8 +62,7 @@ public class CommentController extends HttpServlet {
 				jsonObject.put("bno", vo.getBno());
 				jsonArray.add(jsonObject);
 			}
-			request.setAttribute("data", jsonArray.toJSONString());
-			nextPage = "data";
+			data = jsonArray.toJSONString();
 			break;
 		case "/delete":
 			commentVo = commentParamUtil.setData(request);
@@ -72,26 +71,20 @@ public class CommentController extends HttpServlet {
 			map.put("cno", cno);
 			map.put("loginId", loginId);
 			boolean deleteResult = commentService.deleteComment(map);
-			request.setAttribute("data", deleteResult);
-			nextPage = "data";
+			data = String.valueOf(deleteResult);
 			break;
 		case "/update":
 			commentVo = commentParamUtil.setData(request);
 			commentVo.setId(loginId); // dao에서 작성자 확인 쿼리 작성 목적
 			boolean updateResult = commentService.updateComment(commentVo);
-			request.setAttribute("data", updateResult);
-			nextPage = "data";
+			data = String.valueOf(updateResult);
 			break;
 		}
 		
-		if (nextPage.startsWith("redirect:")) { // redirect를 하는 경우
-			response.sendRedirect(
-					nextPage.substring(nextPage.indexOf("/")));
-		} else { // forward를 하는 경우
-			RequestDispatcher dispatcher = 
-					request.getRequestDispatcher(PREFIX + nextPage + POSTFIX);
-			dispatcher.forward(request, response); // view쪽에 list를 넘겨줌
-		}
+		response.setContentType("text/plain;charset=utf-8");
+		PrintWriter out = response.getWriter();
+		out.print(data);
+		
 	}
 
 	protected void doPost(HttpServletRequest request, 
