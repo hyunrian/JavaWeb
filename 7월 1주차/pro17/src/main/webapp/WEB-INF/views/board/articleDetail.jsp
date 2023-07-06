@@ -5,6 +5,7 @@
 <script>
 var data = null;
 var modifyResult = "${sessionScope.modifyResult}";
+var selectedComment = null;
 if (modifyResult == "true") alert("수정 완료");
 else if (modifyResult == "false") alert("수정 실패");
 
@@ -17,7 +18,7 @@ $(function() {
 				"bno" : "${boardVo.bno}"
 		};
 		$.get(url, sData, function(rData) {
-			console.log(JSON.parse(rData)); 
+			console.log(rData); 
 			var jData = JSON.parse(rData); // 사용 가능한 json 형태로 변환
 			for (var v = 0; v < jData.length; v++) {
 				var tr = "<tr>";
@@ -73,7 +74,7 @@ $(function() {
 				"bno"		: "${boardVo.bno}"
 		};
 		$.post(url, sData, function(rData) {
-			console.log(rData.trim());
+// 			console.log(rData.trim());
 			var vData = rData.trim();
 			if (vData == "true") {
 				$("#commentTable > tbody").empty(); 
@@ -97,17 +98,46 @@ $(function() {
 	$("#commentTable > tbody").on("click", ".btn-comment-delete", function() {
 		var that = $(this);
 		var cno = that.attr("data-cno");
-		console.log("cno:" + cno);
+// 		console.log("cno:" + cno);
 		var url = "/comment/delete";
 		var sData = { "cno" : cno };
 		$.get(url, sData, function(rData) {
-			console.log("rData:" + rData.trim());
+// 			console.log("rData:" + rData.trim());
 			if (rData.trim() == "true") {
 				that.parent().parent().fadeOut("slow"); // 버튼이 속해있는 tr 제거
 				// 여기서 \$(this)를 쓰면 버튼이 아니라 .get이 됨
-				console.log("삭제 버튼 눌림");
-			} else {
-				
+			} 
+		});
+	});
+	
+	// 댓글 수정 버튼
+	$("#commentTable > tbody").on("click", ".btn-comment-update", function() {
+		var cno = $(this).parent().parent().find("td").eq(0).text();
+		var ccontent = $(this).parent().parent().find("td").eq(1).text();
+		selectedComment = $(this).parent().parent().find("td").eq(1);
+// 		console.log("cno:" + cno + ", ccontent:" + ccontent);
+		
+		$("#modal-ccontent").val(ccontent);
+		$("#btnModalSave").attr("data-cno", cno); // 모달창의 저장 버튼에 cno 값 넣기
+		
+		$("#modal-276743").trigger("click"); // 수정버튼을 클릭했을 때 modal이 실행되도록 트리거 설정
+	});
+	
+	// 모달창 저장 버튼
+	$("#btnModalSave").click(function() {
+		var url = "/comment/update";
+		var cno = $(this).attr("data-cno");
+		var ccontent = $("#modal-ccontent").val();
+		var sData = {
+				"cno" : cno,
+				"ccontent" : ccontent
+		};
+		$.post(url, sData, function(rData) {
+// 			console.log(rData);
+			if (rData.trim() == "true") { // 공백 처리 필수
+				console.log("true!!");
+				$("#modal-container-276743").modal("hide");
+				selectedComment.text(ccontent);
 			}
 		});
 	});
@@ -122,6 +152,47 @@ $(function() {
 </form>
 
 <div class="container-fluid">
+
+	<!-- 모달창 -->
+	<div class="row">
+		<div class="col-md-12">
+			<a id="modal-276743" href="#modal-container-276743" role="button" 
+			 	class="btn" data-toggle="modal" style="display:none;">수정창 모달</a>
+			<div class="modal fade" id="modal-container-276743" 
+				role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="myModalLabel">
+								댓글 수정
+							</h5> 
+							<button type="button" class="close" data-dismiss="modal">
+								<span aria-hidden="true">×</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<input type="text" class="form-control" id="modal-ccontent">
+						</div>
+						<div class="modal-footer">
+							 
+							<button type="button" class="btn btn-primary" id="btnModalSave">
+								저장
+							</button> 
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">
+								취소
+							</button>
+						</div>
+					</div>
+					
+				</div>
+				
+			</div>
+			
+		</div>
+	</div>
+	<!-- //모달창 -->
+	
+	
 	<div class="row">
 		<div class="col-md-12">
 			<div class="jumbotron">
@@ -191,7 +262,10 @@ $(function() {
 			</form>
 		</div>
 	</div>
+	
+	
 	<h4 style="margin-top:30px;">Comments</h4>
+	
 	<!-- 댓글 입력 -->
 	<div class="row" style="margin-top:10px;">
 		<div class="col-md-11">
