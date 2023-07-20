@@ -8,7 +8,7 @@
 <title>uploadForm.jsp</title>
 </head>
 <body>
-	<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+	<c:set var="contextPath" value="${pageContext.request.contextPath}"/> <!-- 경로 구하기 -->
 	<!-- 파일전송(binary data) 시 method:post
 		enctype:multipart/form-data로 지정해야 함 -->
 	<form action="${contextPath}/upload.do"
